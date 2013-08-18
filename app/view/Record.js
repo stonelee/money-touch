@@ -8,7 +8,6 @@ Ext.define('Money.view.Record', {
 
     items: [{
         xtype: 'formpanel',
-        scrollable: false,
         items: [{
             xtype: 'fieldset',
             items: [{
@@ -28,11 +27,18 @@ Ext.define('Money.view.Record', {
                 value: 'in'
               }
             ]
+          }
+        ]
+      }, {
+        xtype: 'toolbar',
+        docked: 'bottom',
+        items: [{
+            xtype: 'spacer'
           }, {
             xtype: 'button',
             text: '保存',
             handler: function() {
-              var form = this.up('formpanel');
+              var form = this.up('record').down('formpanel');
 
               var moneyField = form.down('[name=money]');
               var money = moneyField.getValue();
@@ -57,6 +63,8 @@ Ext.define('Money.view.Record', {
                 });
               });
             }
+          }, {
+            xtype: 'spacer'
           }
         ]
       }

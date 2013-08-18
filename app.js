@@ -23,11 +23,16 @@ Ext.application({
   name: 'Money',
 
   requires: [
-      'Ext.MessageBox'
+      'Ext.MessageBox',
+      'Ext.form.Panel',
+      'Ext.form.FieldSet',
+      'Ext.field.Number',
+      'Ext.field.Radio',
+      'Ext.dataview.List'
   ],
 
   views: [
-      'Main'
+      'Main', 'List', 'Edit', 'Record'
   ],
   models: ['Item'],
   stores: ['Items'],

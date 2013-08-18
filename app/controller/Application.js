@@ -3,22 +3,20 @@ Ext.define('Money.controller.Application', {
 
   config: {
     refs: {
-      main: 'main',
+      mainView: 'main',
+      editView: 'edit',
       listButton: '#listButton'
     },
 
     control: {
-      main: {
+      mainView: {
         push: 'onMainPush',
         pop: 'onMainPop'
       },
       listButton: {
         tap: 'onList'
       },
-      'record button': {
-        tap: 'onSaveRecord'
-      },
-      'list': {
+      'records list': {
         itemtap: 'onListSelect'
       },
       'edit button[action=edit]': {
@@ -30,16 +28,8 @@ Ext.define('Money.controller.Application', {
     }
   },
 
-  onList: function() {
-    if (!this.list) {
-      this.list = Ext.create('Money.view.List');
-    }
-
-    this.getMain().push(this.list);
-  },
-
   onMainPush: function(view, item) {
-    if (item.xtype != "record") {
+    if (item.xtype != 'record') {
       this.getListButton().hide();
     }
   },
@@ -50,23 +40,51 @@ Ext.define('Money.controller.Application', {
     }
   },
 
+  onList: function() {
+    if (!this.listView) {
+      this.listView = Ext.create('Money.view.List');
+    }
+
+    this.getMainView().push(this.listView);
+  },
+
   onListSelect: function(list, index, node, record) {
     if (!this.edit) {
       this.edit = Ext.create('Money.view.Edit');
     }
 
     this.edit.setRecord(record);
-    this.getMain().push(this.edit);
+    this.getMainView().push(this.edit);
   },
 
 
   onEdit: function() {
-    this.getMain().pop();
-  },
-  onDelete: function() {
-    this.getMain().pop();
+    var self = this;
+    Ext.Msg.confirm('确认', '真的想修改吗?', function(buttonId) {
+      if (buttonId == 'yes') {
+        var record = self.getEditView().down('formpanel').getValues();
+        if (record.way == 'in') {
+          record.money = -record.money;
+        }
+
+        var model = self.getEditView().record;
+        model.data.money = record.money;
+        model.save(function() {
+          self.getMainView().pop();
+        });
+      }
+    });
   },
 
-  onSaveRecord: function() {}
+  onDelete: function() {
+    var self = this;
+    Ext.Msg.confirm('确认', '真的想删除吗?', function(buttonId) {
+      if (buttonId == 'yes') {
+        self.getEditView().record.erase(function() {
+          self.getMainView().pop();
+        });
+      }
+    });
+  }
 
 });

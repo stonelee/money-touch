@@ -7,15 +7,16 @@ Ext.define('Money.view.Edit', {
     layout: 'fit',
 
     items: [{
+        id: 'datetime',
+        docked: 'top',
+        tpl: [
+            '<h2>',
+            '<p>{datetime}</p>',
+            '</h2>'
+        ].join('')
+      }, {
         xtype: 'formpanel',
         items: [{
-            id: 'datetime',
-            tpl: [
-                '<h2>',
-                '<p>{datetime}</p>',
-                '</h2>'
-            ].join('')
-          }, {
             xtype: 'fieldset',
             items: [{
                 xtype: 'numberfield',
@@ -34,33 +35,24 @@ Ext.define('Money.view.Edit', {
                 value: 'in'
               }
             ]
+          }
+        ]
+      }, {
+        xtype: 'toolbar',
+        docked: 'bottom',
+        items: [{
+            xtype: 'spacer'
           }, {
-            xtype: 'toolbar',
-            docked: 'bottom',
-            items: [{
-                xtype: 'button',
-                action: 'edit',
-                text: '修改',
-                handler: function() {
-                  var record = this.up('formpanel').getValues();
-                  if (record.way == 'in') {
-                    record.money = -record.money;
-                  }
-
-                  var model = this.up('edit').record;
-                  model.data.money = record.money;
-                  model.save();
-                }
-              }, {
-                xtype: 'button',
-                action: 'delete',
-                text: '删除',
-                ui: 'confirm',
-                handler: function() {
-                  this.up('edit').record.erase();
-                }
-              }
-            ]
+            xtype: 'button',
+            action: 'edit',
+            text: '修改'
+          }, {
+            xtype: 'button',
+            action: 'delete',
+            text: '删除',
+            ui: 'confirm'
+          }, {
+            xtype: 'spacer'
           }
         ]
       }
@@ -71,8 +63,13 @@ Ext.define('Money.view.Edit', {
     this.record = record;
 
     var datetime = record.data.datetime;
+    var sDatetime = Ext.Date.format(datetime, 'Y-m-d H:i:s');
+
+    var weeks = ['日', '一', '二', '三', '四', '五', '六'];
+    sDatetime += ' 星期' + weeks[datetime.getDay()];
+
     var data = {
-      datetime: datetime
+      datetime: sDatetime
     };
     this.down('#datetime').setData(data);
 
