@@ -3,60 +3,88 @@ Ext.define('Money.controller.Application', {
 
   config: {
     refs: {
-      main: 'main',
+      mainView: 'main',
+      editView: 'edit',
       listButton: '#listButton'
     },
 
     control: {
-      main: {
+      mainView: {
         push: 'onMainPush',
         pop: 'onMainPop'
       },
       listButton: {
         tap: 'onList'
       },
-      'record button': {
-        tap: 'onSaveRecord'
-      },
-      'list': {
+      'records list': {
         itemtap: 'onListSelect'
+      },
+      'edit button[action=edit]': {
+        tap: 'onEdit'
+      },
+      'edit button[action=delete]': {
+        tap: 'onDelete'
       }
     }
   },
 
-  onList: function() {
-    if (!this.list) {
-      this.list = Ext.create('Money.view.List');
-    }
-
-    this.getMain().push(this.list);
-  },
-
   onMainPush: function(view, item) {
-    if (item.xtype != "record") {
+    if (item.xtype != 'record') {
       this.getListButton().hide();
     }
   },
 
-  onMainPop: function(view, item) {
-    if (view.xtype == "main") {
+  onMainPop: function(view, item, index) {
+    if (index == 2) {
       this.getListButton().show();
     }
   },
 
+  onList: function() {
+    if (!this.listView) {
+      this.listView = Ext.create('Money.view.List');
+    }
+
+    this.getMainView().push(this.listView);
+  },
+
   onListSelect: function(list, index, node, record) {
-    //if (!this.showContact) {
-    //this.showContact = Ext.create('AddressBook.view.contact.Show');
-    //}
+    if (!this.edit) {
+      this.edit = Ext.create('Money.view.Edit');
+    }
 
-    //// Bind the record onto the show contact view
-    //this.showContact.setRecord(record);
-
-    //// Push the show contact view into the navigation view
-    //this.getMain().push(this.showContact);
+    this.edit.setRecord(record);
+    this.getMainView().push(this.edit);
   },
 
 
-  onSaveRecord: function() {}
+  onEdit: function() {
+    var self = this;
+    Ext.Msg.confirm('确认', '真的想修改吗?', function(buttonId) {
+      if (buttonId == 'yes') {
+        var record = self.getEditView().down('formpanel').getValues();
+        if (record.way == 'in') {
+          record.money = -record.money;
+        }
+
+        var model = self.getEditView().record;
+        model.data.money = record.money;
+        model.save(function() {
+          self.getMainView().pop();
+        });
+      }
+    });
+  },
+
+  onDelete: function() {
+    var self = this;
+    Ext.Msg.confirm('确认', '真的想删除吗?', function(buttonId) {
+      if (buttonId == 'yes') {
+        self.getEditView().record.erase(function() {
+          self.getMainView().pop();
+        });
+      }
+    });
+  }
 
 });

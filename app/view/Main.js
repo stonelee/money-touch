@@ -1,9 +1,6 @@
 Ext.define('Money.view.Main', {
   extend: 'Ext.navigation.View',
   xtype: 'main',
-  requires: [
-      'Money.view.Record'
-  ],
   config: {
     autoDestroy: false,
 

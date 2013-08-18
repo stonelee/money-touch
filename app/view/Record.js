@@ -8,7 +8,6 @@ Ext.define('Money.view.Record', {
 
     items: [{
         xtype: 'formpanel',
-        scrollable: false,
         items: [{
             xtype: 'fieldset',
             items: [{
@@ -28,24 +27,44 @@ Ext.define('Money.view.Record', {
                 value: 'in'
               }
             ]
+          }
+        ]
+      }, {
+        xtype: 'toolbar',
+        docked: 'bottom',
+        items: [{
+            xtype: 'spacer'
           }, {
             xtype: 'button',
             text: '保存',
             handler: function() {
-              //TODO: 验证,money只能输入正数
-              var record = this.up('formpanel').getValues();
+              var form = this.up('record').down('formpanel');
+
+              var moneyField = form.down('[name=money]');
+              var money = moneyField.getValue();
+              if (money <= 0) {
+                Ext.Msg.alert('提示', '金额应该为正数', function() {
+                  moneyField.setValue(Math.abs(money));
+                });
+                return;
+              }
+
+              var record = form.getValues();
               if (record.way == 'in') {
                 record.money = -record.money;
               }
               record.datetime = new Date();
 
-              //var model = Ext.create('Money.model.Item', record);
-              //model.save();
-
-              var store = Ext.create('Money.store.Items');
-              store.add(record);
-              store.sync();
+              var model = Ext.create('Money.model.Item', record);
+              var way = record.way == 'in' ? '借帐' : '帮付';
+              model.save(function() {
+                Ext.Msg.alert('提示', '[' + way + money + '元]保存成功', function() {
+                  form.reset();
+                });
+              });
             }
+          }, {
+            xtype: 'spacer'
           }
         ]
       }
