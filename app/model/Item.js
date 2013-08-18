@@ -1,6 +1,9 @@
 Ext.define('Money.model.Item', {
   extend: 'Ext.data.Model',
   config: {
+    identifier: {
+      type: 'uuid'
+    },
     fields: [{
         name: 'money',
         type: 'float'
