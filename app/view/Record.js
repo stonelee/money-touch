@@ -27,20 +27,16 @@ Ext.define('Money.view.Record', {
                 value: 'in'
               }
             ]
-          }
-        ]
-      }, {
-        xtype: 'toolbar',
-        docked: 'bottom',
-        items: [{
-            xtype: 'spacer'
           }, {
             xtype: 'button',
             text: '保存',
             handler: function() {
-              var form = this.up('record').down('formpanel');
+              var form = this.up('formpanel');
 
               var moneyField = form.down('[name=money]');
+              //防止键盘出现
+              moneyField.blur();
+
               var money = moneyField.getValue();
               if (money <= 0) {
                 Ext.Msg.alert('提示', '金额应该为正数', function() {
@@ -63,8 +59,6 @@ Ext.define('Money.view.Record', {
                 });
               });
             }
-          }, {
-            xtype: 'spacer'
           }
         ]
       }

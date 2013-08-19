@@ -59,6 +59,11 @@ Ext.define('Money.view.Edit', {
     ]
   },
 
+  hideKeyboard: function() {
+    var moneyField = this.down('[name=money]');
+    moneyField.blur();
+  },
+
   setRecord: function(record) {
     this.record = record;
 

@@ -49,16 +49,18 @@ Ext.define('Money.controller.Application', {
   },
 
   onListSelect: function(list, index, node, record) {
-    if (!this.edit) {
-      this.edit = Ext.create('Money.view.Edit');
+    if (!this.editView) {
+      this.editView = Ext.create('Money.view.Edit');
     }
 
-    this.edit.setRecord(record);
-    this.getMainView().push(this.edit);
+    this.editView.setRecord(record);
+    this.getMainView().push(this.editView);
   },
 
 
   onEdit: function() {
+    this.editView.hideKeyboard();
+
     var self = this;
     Ext.Msg.confirm('确认', '真的想修改吗?', function(buttonId) {
       if (buttonId == 'yes') {
