@@ -8,3 +8,24 @@
 
 // Examples of using the icon mixin:
 // @include icon('user');
+
+#total {
+  margin: 10px 0;
+  margin-left: 20px;
+
+  .label {
+    margin-right: 10px;
+  }
+  .rmb {
+    color: #999;
+    margin-right: 4px;
+  }
+  .number {
+    color: #f40;
+    font-weight: bold;
+  }
+}
+
+#datetime {
+  margin: 10px 0 0 20px;
+}

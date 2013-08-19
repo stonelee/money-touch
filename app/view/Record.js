@@ -29,6 +29,7 @@ Ext.define('Money.view.Record', {
             ]
           }, {
             xtype: 'button',
+            ui: 'action',
             text: '保存',
             handler: function() {
               var form = this.up('formpanel');

@@ -45,12 +45,16 @@ Ext.define('Money.view.Edit', {
           }, {
             xtype: 'button',
             action: 'edit',
+            padding: '0 30',
+            ui: 'confirm',
             text: '修改'
           }, {
             xtype: 'button',
             action: 'delete',
+            margin: '0 0 0 50',
+            padding: '0 30',
             text: '删除',
-            ui: 'confirm'
+            ui: 'decline'
           }, {
             xtype: 'spacer'
           }
