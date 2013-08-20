@@ -105,7 +105,7 @@ Ext.define('Ext.data.Connection', {
          * This should be set to false when making CORS (cross-domain) requests.
          * @accessor
          */
-        useDefaultXhrHeader : true,
+        useDefaultXhrHeader : false,
 
         /**
          * @cfg {String} defaultXhrHeader
