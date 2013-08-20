@@ -43,6 +43,29 @@ Ext.define('Money.view.List', {
             }
           }
         })
+      }, {
+        xtype: 'toolbar',
+        docked: 'bottom',
+        items: [{
+            xtype: 'button',
+            action: 'batch',
+            padding: '0 30',
+            ui: 'confirm',
+            text: '归档',
+            handler: function() {
+              var view = this.up('records');
+              view.batch();
+              view.clearList();
+            }
+          }, {
+            xtype: 'spacer'
+          }, {
+            xtype: 'button',
+            action: 'history',
+            padding: '0 30',
+            text: '查看历史'
+          }
+        ]
       }
     ],
     listeners: {
@@ -60,8 +83,45 @@ Ext.define('Money.view.List', {
           self.down('#total').setData({
             number: money
           });
+
+          //金额总计
+          self.totalMoney = money;
         });
       }
     }
+  },
+
+  batch: function() {
+    var data = {};
+    data.total = this.totalMoney;
+
+    this.down('list').getStore().load(function(records) {
+      data.records = [];
+      Ext.each(records, function(record) {
+        //Ext.Ajax实现貌似有问题,会将object转化为[object Object]
+        data.records.push(JSON.stringify(record.data));
+      });
+
+      Ext.Ajax.request({
+        url: 'http://10.10.22.84:3000/batch',
+        //CORS
+        useDefaultXhrHeader: false,
+        params: data,
+        callback: function(options, success, response) {
+          console.log(response.responseText);
+        }
+      });
+    });
+  },
+
+  clearList: function() {
+    var store = this.down('list').getStore();
+    store.removeAll();
+    store.sync();
+
+    this.down('#total').setData({
+      number: 0
+    });
   }
+
 });

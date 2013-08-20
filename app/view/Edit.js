@@ -69,6 +69,7 @@ Ext.define('Money.view.Edit', {
   },
 
   setRecord: function(record) {
+    //页面对应的数据
     this.record = record;
 
     var datetime = record.data.datetime;
