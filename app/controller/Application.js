@@ -19,6 +19,12 @@ Ext.define('Money.controller.Application', {
       'records list': {
         itemtap: 'onListSelect'
       },
+      'records button[action=history]': {
+        tap: 'onHistory'
+      },
+      'history-list list': {
+        itemtap: 'onHistorySelect'
+      },
       'edit button[action=edit]': {
         tap: 'onEdit'
       },
@@ -55,6 +61,23 @@ Ext.define('Money.controller.Application', {
 
     this.editView.setRecord(record);
     this.getMainView().push(this.editView);
+  },
+
+  onHistory: function() {
+    if (!this.historyListView) {
+      this.historyListView = Ext.create('Money.view.history.List');
+    }
+
+    this.getMainView().push(this.historyListView);
+  },
+
+  onHistorySelect: function(list, index, node, record) {
+    if (!this.historyDetailView) {
+      this.historyDetailView = Ext.create('Money.view.history.Detail');
+    }
+
+    this.historyDetailView.setRecord(record);
+    this.getMainView().push(this.historyDetailView);
   },
 
 

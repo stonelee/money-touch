@@ -32,10 +32,10 @@ Ext.application({
   ],
 
   views: [
-      'Main', 'List', 'Edit', 'Record'
+      'Main', 'List', 'Edit', 'Record', 'history.List', 'history.Detail'
   ],
-  models: ['Item'],
-  stores: ['Items'],
+  models: ['Item', 'Batch'],
+  stores: ['Items', 'Batches'],
   controllers: ['Application'],
 
   icon: {
@@ -74,3 +74,14 @@ Ext.application({
     });
   }
 });
+
+//公共函数
+var App = {
+  formatDatetime: function(datetime) {
+    var sDatetime = Ext.Date.format(datetime, 'Y-m-d H:i:s');
+    var weeks = ['日', '一', '二', '三', '四', '五', '六'];
+    sDatetime += ' 星期' + weeks[datetime.getDay()];
+    return sDatetime;
+  }
+
+};

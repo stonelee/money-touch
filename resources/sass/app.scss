@@ -9,9 +9,9 @@
 // Examples of using the icon mixin:
 // @include icon('user');
 
-#total {
+#total, #history-total {
   margin: 10px 0;
-  margin-left: 20px;
+  text-align: center;
 
   .label {
     margin-right: 10px;

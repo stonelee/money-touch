@@ -25,16 +25,10 @@ Ext.define('Money.view.List', {
         store: 'Items',
 
         itemTpl: new Ext.XTemplate(
-          '<div class="title">{[this.formatDate(values.datetime)]}</div>',
+          '<div>{[App.formatDatetime(values.datetime)]}</div>',
           '<p>[{[this.way(values.money)]}]',
           '<span style="margin-left:10px;">¥{[Math.abs(values.money)]}</span>',
           '</p>', {
-          formatDate: function(datetime) {
-            var sDatetime = Ext.Date.format(datetime, 'Y-m-d H:i:s');
-            var weeks = ['日', '一', '二', '三', '四', '五', '六'];
-            sDatetime += ' 星期' + weeks[datetime.getDay()];
-            return sDatetime;
-          },
           way: function(money) {
             if (money < 0) {
               return '<span style="color:red;">借帐</span>';

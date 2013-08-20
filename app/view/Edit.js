@@ -73,13 +73,8 @@ Ext.define('Money.view.Edit', {
     this.record = record;
 
     var datetime = record.data.datetime;
-    var sDatetime = Ext.Date.format(datetime, 'Y-m-d H:i:s');
-
-    var weeks = ['日', '一', '二', '三', '四', '五', '六'];
-    sDatetime += ' 星期' + weeks[datetime.getDay()];
-
     var data = {
-      datetime: sDatetime
+      datetime: App.formatDatetime(datetime)
     };
     this.down('#datetime').setData(data);
 
