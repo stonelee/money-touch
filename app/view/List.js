@@ -53,9 +53,14 @@ Ext.define('Money.view.List', {
             ui: 'confirm',
             text: '归档',
             handler: function() {
-              var view = this.up('records');
-              view.batch();
-              view.clearList();
+              var self = this;
+              Ext.Msg.confirm('确认', '真的想归档吗?', function(buttonId) {
+                if (buttonId == 'yes') {
+                  var view = self.up('records');
+                  view.batch();
+                  view.clearList();
+                }
+              });
             }
           }, {
             xtype: 'spacer'
